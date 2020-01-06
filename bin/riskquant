@@ -1,0 +1,9 @@
+#!/usr/bin/env python3
+
+import sys
+
+import riskquant
+
+
+if __name__ == '__main__':
+    riskquant.main(sys.argv[1:])
