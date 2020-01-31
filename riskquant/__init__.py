@@ -24,7 +24,7 @@ from riskquant import simpleloss
 
 
 __appname__ = 'riskquant'
-__version__ = '1.0.3'
+__version__ = '1.0.4'
 
 NAME_VERSION = '%s %s' % (__appname__, __version__)
 
