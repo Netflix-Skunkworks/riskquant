@@ -8,13 +8,63 @@ python3 setup.py
 
 ## Using riskquant as a library
 
+### simpleloss  
+
+The simpleloss class uses a single value for frequency, and two values for a magnitude range that are mapped to a [lognormal distribution](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.html).  
+
+
+The inputs to simpleloss are as follows:  
+
+ * Identifier: An identifying label, which need not be unique, (see "Uniqueness of identifiers" below) but is 
+  intended to provide a way of identifying the scenario. 
+ * Name: The name of the scenario, which should be more descriptive than the identifier.
+ * Frequency: The number of times that the loss will occur over some interval of time (e.g. 0.1 means 1 occurrence per 10 years on average).
+ * Low loss magnitude: A dollar value of the best-case scenario, given that the loss did occur. All our detection systems worked, so we
+  found out about the event and remediated quickly.
+ * High loss magnitude: A dollar value of the worst-cases scenario. Our detection systems didn't work, and the problem persisted for a long
+  time until it was unavoidable to notice it and stop it.
+
 ```python
 >> from riskquant import simpleloss
->> s = simpleloss.SimpleLoss("ALICE", "Alice steals the data", 0.10, 1E6, 10E6)
+>> s = simpleloss.SimpleLoss("ALICE", "Alice steals the data", 0.10, 100000, 1000000)
 >> s.annualized_loss()
 
 40400.128269457266
 ```
+
+### pertloss
+
+The pertloss class uses two values for a magnitude range that are mapped to a lognormal distribution, and
+four values for frequency that are used to create a [Modified PERT distribution](https://www.tensorflow.org/probability/api_docs/python/tfp/experimental/substrates/numpy/distributions/PERT).  
+
+
+The inputs to pertloss are as follows:  
+
+ * Low loss magnitude: A dollar value of the best-case scenario, given that the loss did occur. All our detection systems worked, so we
+  found out about the event and remediated quickly.
+ * High loss magnitude: A dollar value of the worst-cases scenario. Our detection systems didn't work, and the problem persisted for a long
+  time until it was unavoidable to notice it and stop it.
+ * Minimum frequency: The lowest number of times a loss will occur over some interval of time
+ * Maximum frequency: The highest number of times a loss will occur over some interval of time
+ * Most likely frequency: The most likely number of times a loss will occur over some interval of time.  Sets the skew of the distribution.
+ * Kurtosis: A number that controls the shape of the PERT distribution, with a default of 4.  Higher values will cause a sharper peak.  
+ In FAIR, this is called the "belief in the most likely" frequency, based on the confidence of the estimator in the most likely frequency.  
+ With higher kurtosis, more samples in the simulation will be closer to the most likely frequency. 
+
+```python
+>> from riskquant import pertloss
+>> p = pertloss.PERTLoss(10, 100, .1, .7, .3, kurtosis=1) 
+>> simulate_100 = p.simulate_years(100)
+>> p.summarize_loss(simulate_100)
+
+{'minimum': 0,
+ 'tenth_percentile': 0,
+ 'mode': 0,
+ 'median': 1,
+ 'ninetieth_percentile': 2,
+ 'maximum': 6}
+```
+
 
 ## Using riskquant as a utility
 
