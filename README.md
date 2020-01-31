@@ -26,7 +26,7 @@ The inputs to simpleloss are as follows:
 
 ```python
 >> from riskquant import simpleloss
->> s = simpleloss.SimpleLoss("T_PLANKTON", "Plankton steals the Krabby Patty recipe", 0.10, 100000, 1000000)
+>> s = simpleloss.SimpleLoss("Alice", "Alice steals the data", 0.10, 100000, 1000000)
 >> s.annualized_loss()
 
 40400.128269457266
