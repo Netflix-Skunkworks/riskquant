@@ -48,3 +48,6 @@ docs/_build/
 
 #pycharm files
 .idea/
+
+# Exuberant ctags files
+tags
