@@ -1,6 +1,8 @@
 # riskquant
 
-A library to assist in quantifying risk. To use riskquant:
+A library to assist in quantifying risk.
+
+To install riskquant:
 
 ```bash
 python3 setup.py
@@ -8,15 +10,15 @@ python3 setup.py
 
 ## Using riskquant as a library
 
-### simpleloss  
+### simpleloss
 
-The simpleloss class uses a single value for frequency, and two values for a magnitude range that are mapped to a [lognormal distribution](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.html).  
+The simpleloss class uses a single value for frequency, and two values for a magnitude range that are mapped to a [lognormal distribution](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.html).
 
 
-The inputs to simpleloss are as follows:  
+The inputs to simpleloss are as follows:
 
- * Identifier: An identifying label, which need not be unique, (see "Uniqueness of identifiers" below) but is 
-  intended to provide a way of identifying the scenario. 
+ * Identifier: An identifying label, which need not be unique, (see "Uniqueness of identifiers" below) but is
+  intended to provide a way of identifying the scenario.
  * Name: The name of the scenario, which should be more descriptive than the identifier.
  * Frequency: The number of times that the loss will occur over some interval of time (e.g. 0.1 means 1 occurrence per 10 years on average).
  * Low loss magnitude: A dollar value of the best-case scenario, given that the loss did occur. All our detection systems worked, so we
@@ -35,10 +37,10 @@ The inputs to simpleloss are as follows:
 ### pertloss
 
 The pertloss class uses two values for a magnitude range that are mapped to a lognormal distribution, and
-four values for frequency that are used to create a [Modified PERT distribution](https://www.tensorflow.org/probability/api_docs/python/tfp/experimental/substrates/numpy/distributions/PERT).  
+four values for frequency that are used to create a [Modified PERT distribution](https://www.tensorflow.org/probability/api_docs/python/tfp/experimental/substrates/numpy/distributions/PERT).
 
 
-The inputs to pertloss are as follows:  
+The inputs to pertloss are as follows:
 
  * Low loss magnitude: A dollar value of the best-case scenario, given that the loss did occur. All our detection systems worked, so we
   found out about the event and remediated quickly.
@@ -47,13 +49,13 @@ The inputs to pertloss are as follows:
  * Minimum frequency: The lowest number of times a loss will occur over some interval of time
  * Maximum frequency: The highest number of times a loss will occur over some interval of time
  * Most likely frequency: The most likely number of times a loss will occur over some interval of time.  Sets the skew of the distribution.
- * Kurtosis: A number that controls the shape of the PERT distribution, with a default of 4.  Higher values will cause a sharper peak.  
- In FAIR, this is called the "belief in the most likely" frequency, based on the confidence of the estimator in the most likely frequency.  
- With higher kurtosis, more samples in the simulation will be closer to the most likely frequency. 
+ * Kurtosis: A number that controls the shape of the PERT distribution, with a default of 4.  Higher values will cause a sharper peak.
+ In FAIR, this is called the "belief in the most likely" frequency, based on the confidence of the estimator in the most likely frequency.
+ With higher kurtosis, more samples in the simulation will be closer to the most likely frequency.
 
 ```python
 >> from riskquant import pertloss
->> p = pertloss.PERTLoss(10, 100, .1, .7, .3, kurtosis=1) 
+>> p = pertloss.PERTLoss(10, 100, .1, .7, .3, kurtosis=1)
 >> simulate_100 = p.simulate_years(100)
 >> p.summarize_loss(simulate_100)
 
@@ -79,8 +81,8 @@ Identifier,Name,Probability,Low_loss,High_loss
 ```
 The columns are defined as follows:
 
-* Identifier: An identifying label, which need not be unique, (see "Uniqueness of identifiers" below) but is 
-  intended to provide a way of identifying the scenario. 
+* Identifier: An identifying label, which need not be unique, (see "Uniqueness of identifiers" below) but is
+  intended to provide a way of identifying the scenario.
 * Name: The name of the scenario, which should be more descriptive than the identifier.
 * Probability: The chance that the loss will occur over some interval of time (typically a year). More
   precisely, this is defined as a rate of ocurrence (e.g. 0.1 means 1 occurrence per 10 years on average).
@@ -117,7 +119,7 @@ ALICE,Alice steals the data,"$40,400"
 Note that by default the output uses 3 significant digits, which is generally more than enough to capture
 the precision of the inputs.
 
-By default, the executable will also generate a Loss Exceedance Curve (LEC) which is a statistical 
+By default, the executable will also generate a Loss Exceedance Curve (LEC) which is a statistical
 description of the combined risk due to all the loss scenarios. The curve is generated by simulating
 many possible years and summing the losses across all losses that occurred in that simulated year.
 We then ask: "What loss magnitude was exceeded in 90% of the simulated years", 80%, 70% and so on.
@@ -131,7 +133,7 @@ Required argument:
 ```
 --file : CSV of scenario name and parameters
 ```
-  
+
 Optional argument:
 
 ```
