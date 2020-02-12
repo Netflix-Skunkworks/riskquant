@@ -2,10 +2,10 @@
 
 A library to assist in quantifying risk.
 
-To install riskquant:
+To install riskquant run the following command in root directory:
 
 ```bash
-python3 setup.py
+pip install .
 ```
 
 ## Using riskquant as a library
@@ -28,7 +28,7 @@ The inputs to simpleloss are as follows:
 
 ```python
 >> from riskquant import simpleloss
->> s = simpleloss.SimpleLoss("ALICE", "Alice steals the data", 0.10, 100000, 1000000)
+>> s = simpleloss.SimpleLoss(label="ALICE", name="Alice steals the data", p=0.10, low_loss=100000, high_loss=1000000)
 >> s.annualized_loss()
 
 40400.128269457266
@@ -55,7 +55,7 @@ The inputs to pertloss are as follows:
 
 ```python
 >> from riskquant import pertloss
->> p = pertloss.PERTLoss(10, 100, .1, .7, .3, kurtosis=1)
+>> p = pertloss.PERTLoss(low_loss=10, high_loss=100, min_freq=0.1, max_freq=0.7, most_likely_freq=0.3, kurtosis=1)
 >> simulate_100 = p.simulate_years(100)
 >> p.summarize_loss(simulate_100)
 
