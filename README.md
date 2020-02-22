@@ -143,6 +143,35 @@ Optional argument:
 --plot : Generate Loss Exceedance Curve [ default true ]
 ```
 
+### Using riskquant via Docker
+
+Here's how to build and run `riskquant` using Docker.
+
+First, build the image locally:
+
+```
+docker build -t riskquant .
+```
+
+This step only needs to be done once for a given version of riskquant.
+
+Then, assuming your inputs are in a `data` sub-directory, you can analyze it with riskquant using a command like:
+
+```
+docker container run --rm -it \
+  -v "$(PWD)/data/":/data/ \
+  riskquant --file /data/input.csv
+```
+
+When running `riskquant` via Docker, Docker needs to mount a local directory into the container so that 
+`riskquant` can read inputs *from* and write outputs *to* that directory.  This command mounts the local `data` 
+directory into the container at `/data`.  The `--file` option tells `riskquant` where to find the file when 
+running inside the container.  You can pass other options to `riskquant` just like normal, including `--help`.
+
+Now, check the analysis results with a command like:
+```
+cat data/input_prioritized.csv
+```
 
 ### Uniqueness of identifiers
 
