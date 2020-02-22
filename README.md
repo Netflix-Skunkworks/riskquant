@@ -155,7 +155,7 @@ docker build -t riskquant .
 
 This step only needs to be done once for a given version of riskquant.
 
-Then, assuming your inputs are in a `data` sub-directory, you can analyze it with riskquant using a command like:
+Then, assuming your inputs are in a `data` sub-directory, you can analyze them with `riskquant` using a command like:
 
 ```
 docker container run --rm -it \
