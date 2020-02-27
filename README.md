@@ -28,7 +28,7 @@ The inputs to simpleloss are as follows:
 
 ```python
 >> from riskquant import simpleloss
->> s = simpleloss.SimpleLoss(label="ALICE", name="Alice steals the data", p=0.10, low_loss=100000, high_loss=1000000)
+>> s = simpleloss.SimpleLoss(label="ALICE", name="Alice steals the data", frequency=0.10, low_loss=100000, high_loss=1000000)
 >> s.annualized_loss()
 
 40400.128269457266

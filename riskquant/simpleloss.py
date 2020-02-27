@@ -34,16 +34,16 @@ import numpy as np
 
 
 class SimpleLoss:
-    def __init__(self, label, name, p, low_loss, high_loss):
-        if not 0. <= p <= 1.:
-            # Probabilities must be in the range [0, 1]
+    def __init__(self, label, name, frequency, low_loss, high_loss):
+        if frequency < 0:
+            # Frequency must be non-negative
             raise AssertionError
         if low_loss >= high_loss:
             # High loss must exceed low loss
             raise AssertionError
         self.label = label
         self.name = name
-        self.p = p
+        self.frequency = frequency
         self.low_loss = low_loss
         self.high_loss = high_loss
 
@@ -58,7 +58,7 @@ class SimpleLoss:
 
         :returns: Scalar of expected mean loss on an annualized basis."""
 
-        return self.p * self.distribution.mean()
+        return self.frequency * self.distribution.mean()
 
     def single_loss(self):
         """Draw a single loss amount. Not scaled by probability of occurrence.
@@ -71,7 +71,7 @@ class SimpleLoss:
         """Generate a random number of losses, and loss amount for each.
 
         :returns: List of loss amounts, or empty list if no loss occurred."""
-        num_losses = np.random.poisson(self.p, 1)[0]
+        num_losses = np.random.poisson(self.frequency, 1)[0]
         return [self.single_loss() for _ in range(num_losses)]
 
     def simulate_years(self, n):
@@ -80,7 +80,7 @@ class SimpleLoss:
         :arg: n = Number of years to simulate
         :returns: List of length n with loss amounts per year. Amount is 0 if no loss occurred."""
         # Generate a loss count (of value 0+) for each year being simulated
-        losses_each_year = np.random.poisson(self.p, n)
+        losses_each_year = np.random.poisson(self.frequency, n)
         # The total number of loss events across all years
         total_loss_count = sum(losses_each_year)
         # The loss amounts for all the losses across all the years, generated all at once.

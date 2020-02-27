@@ -31,7 +31,7 @@ class TestRiskquant(unittest.TestCase):
         path = TestRiskquant._write_to_tempfile(csvdata)
         losses = riskquant.csv_to_simpleloss(path)
         for i in range(len(expected)):
-            loss = (losses[i].label, losses[i].name, losses[i].p,
+            loss = (losses[i].label, losses[i].name, losses[i].frequency,
                     losses[i].low_loss, losses[i].high_loss)
             for j in range(5):
                 self.assertEqual(loss[j], expected[i][j])
