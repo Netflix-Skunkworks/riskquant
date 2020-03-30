@@ -27,7 +27,7 @@ class Test(unittest.TestCase):
     def testVariables(self):
         self.assertEqual(self.s.label, 'L1')
         self.assertEqual(self.s.name, 'loss_name')
-        self.assertEqual(self.s.p, 0.1)
+        self.assertEqual(self.s.frequency, 0.1)
         self.assertEqual(self.s.low_loss, 1)
         self.assertEqual(self.s.high_loss, 10)
 
@@ -35,6 +35,10 @@ class Test(unittest.TestCase):
         # Returns the mean of the configured distribution scaled by the probability
         # of occurrence p
         self.assertAlmostEqual(self.s.annualized_loss(), 0.4040012826945718)
+
+    def testLargeFrequency(self):
+        lg = simpleloss.SimpleLoss('Large', 'large_loss', 3.0, 1, 10)
+        self.assertAlmostEqual(lg.annualized_loss(), 12.120038480837177)  # 30x the value above
 
     def testDistribution(self):
         # We defined the cdf(low) ~ 0.05 and the cdf(hi) ~ 0.95 so that
@@ -77,23 +81,8 @@ class Test(unittest.TestCase):
         self.assertAlmostEqual(hard.annualized_loss(), 414589.4783457917)
 
     def testContract(self):
-        # Probability must be <= 1.
-        try:
-            simpleloss.SimpleLoss("L2", "loss2", 10, 100, 1000)  # p > 1
-            self.fail("Probability <= 1. not enforced")
-        except AssertionError:
-            pass
-
-        # Probability must be >= 0.
-        try:
-            simpleloss.SimpleLoss("L2", "loss2", -1, 100, 1000)  # p < 0
-            self.fail("Probability >= 0. not enforced")
-        except AssertionError:
-            pass
+        # Frequency must be >= 0.
+        self.assertRaises(AssertionError, simpleloss.SimpleLoss, "L2", "loss2", -1, 100, 1000)
 
         # High loss must exceed low loss
-        try:
-            simpleloss.SimpleLoss("L2", "loss2", 0.5, 1000, 100)  # low_loss > high_loss
-            self.fail("low_loss <= high_loss not enforced")
-        except AssertionError:
-            pass
+        self.assertRaises(AssertionError, simpleloss.SimpleLoss, "L2", "loss2", 0.5, 1000, 100)
