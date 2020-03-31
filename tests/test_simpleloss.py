@@ -19,10 +19,10 @@ from riskquant import simpleloss
 
 class Test(unittest.TestCase):
     def setUp(self):
-        p = 0.1
+        frequency = 0.1
         low = 1
         high = 10
-        self.s = simpleloss.SimpleLoss('L1', 'loss_name', p, low, high)
+        self.s = simpleloss.SimpleLoss('L1', 'loss_name', frequency, low, high)
 
     def testVariables(self):
         self.assertEqual(self.s.label, 'L1')
@@ -40,30 +40,18 @@ class Test(unittest.TestCase):
         lg = simpleloss.SimpleLoss('Large', 'large_loss', 3.0, 1, 10)
         self.assertAlmostEqual(lg.annualized_loss(), 12.120038480837177)  # 30x the value above
 
-    def testDistribution(self):
-        # We defined the cdf(low) ~ 0.05 and the cdf(hi) ~ 0.95 so that
-        # it would be the 90% confidence interval. Check that it's true.
-        self.assertTrue(0.049 < self.s.distribution.cdf(1) < 0.051)
-        self.assertTrue(0.949 < self.s.distribution.cdf(10) < 0.951)
-
-    def testSingleLoss(self):
-        # The mean of many single losses should be close to the
-        # mean of the distribution. We are not using probability p here.
-        iterations = 10000
-        mean_loss = sum([self.s.single_loss() for _ in range(iterations)]) / iterations
-        self.assertGreater(mean_loss, 3.9)
-        self.assertLess(mean_loss, 4.2)
-
     def testSimulateLossesOneYear(self):
         # Should return a list of zero or more losses that fall mostly within the
         # configured range (1, 10)
+        self.s = simpleloss.SimpleLoss('L1', 'loss_name', 10, 1, 10)
         for _ in range(100):
             losses = self.s.simulate_losses_one_year()
             if len(losses) == 0:
-                self.assertEqual(sum(losses), 0)
+                self.assertEqual([], losses)
             else:
-                self.assertGreater(sum(losses), 0.05)
-                self.assertLess(sum(losses), 10000)
+                self.assertGreater(100, len(losses))
+                self.assertLess(0.05 * len(losses), sum(losses))
+                self.assertGreater(100 * len(losses), sum(losses))
 
     def testSimulateYears(self):
         # Should return a list of length == years
@@ -74,11 +62,6 @@ class Test(unittest.TestCase):
         mean_loss = sum(losses) / years
         self.assertGreater(mean_loss, 0.36)
         self.assertLess(mean_loss, 0.45)
-
-    def testHardParameters(self):
-        # Test difficult-to-fit parameter values
-        hard = simpleloss.SimpleLoss('H1', 'hard_loss', 0.07, 635000, 19000000)
-        self.assertAlmostEqual(hard.annualized_loss(), 414589.4783457917)
 
     def testContract(self):
         # Frequency must be >= 0.
