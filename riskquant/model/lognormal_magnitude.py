@@ -50,5 +50,3 @@ class LognormalMagnitude(object):
 
     def mean(self):
         return self.distribution.mean()
-
-

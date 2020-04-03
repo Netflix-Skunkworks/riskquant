@@ -37,6 +37,21 @@ class TestLoss(unittest.TestCase):
         multiple_years = loss_model.simulate_years(3)
         self.assertEqual([0, 0, 0], multiple_years)
 
+    def testSummary(self):
+        loss_array = []
+        for i in range(10):
+            loss_model = loss.Loss(FixedValueModel(1), FixedValueModel(i))
+            loss_array += loss_model.simulate_years(100)
+        loss_array += loss_model.simulate_years(10)  # Add a few more for value 9
+
+        summary = loss_model.summarize_loss(loss_array)
+        self.assertEqual(summary['minimum'], 0)
+        self.assertEqual(summary['tenth_percentile'], 1)
+        self.assertEqual(summary['mode'], 9)
+        self.assertEqual(summary['median'], 5)
+        self.assertEqual(summary['ninetieth_percentile'], 9)
+        self.assertEqual(summary['maximum'], 9)
+
 
 if __name__ == '__main__':
     unittest.main()
