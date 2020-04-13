@@ -15,6 +15,9 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+import numpy as np
+import scipy
+
 
 class Loss(object):
     def __init__(self, frequency_model, magnitude_model):
@@ -44,3 +47,20 @@ class Loss(object):
             losses[i] = sum(loss_values[losses_used:losses_used + new_losses])
             losses_used += new_losses
         return losses
+
+    @staticmethod
+    def summarize_loss(loss_array):
+        """Get statistics about a numpy array.
+        Risk is a range of possibilities, not just one outcome.
+
+        :arg: loss_array = Numpy array of simulated losses
+        :returns: Dictionary of statistics about the loss
+        """
+        percentiles = np.percentile(loss_array, [10, 50, 90]).astype(int)
+        loss_summary = {'minimum': np.min(loss_array).astype(int),
+                        'tenth_percentile': percentiles[0],
+                        'mode': scipy.stats.mode(loss_array)[0][0].astype(int),
+                        'median': percentiles[1],
+                        'ninetieth_percentile': percentiles[2],
+                        'maximum': np.max(loss_array).astype(int)}
+        return loss_summary
