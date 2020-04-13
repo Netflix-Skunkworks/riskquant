@@ -47,8 +47,8 @@ class Test(unittest.TestCase):
         losses = self.s.simulate_years(years)
         self.assertEqual(len(losses), years)
         mean_loss = sum(losses) / years
-        self.assertGreater(mean_loss, 0.5)
-        self.assertLess(mean_loss, 1.5)
+        self.assertGreater(mean_loss, 0.1)
+        self.assertLess(mean_loss, 2.0)
 
     def testMinMaxFrequency(self):
         # Min must be less than max.

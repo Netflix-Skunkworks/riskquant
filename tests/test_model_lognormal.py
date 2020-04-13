@@ -19,6 +19,5 @@ class MyTestCase(unittest.TestCase):
         self.assertAlmostEqual(5922706.83351131, hard.mean())
 
 
-
 if __name__ == '__main__':
     unittest.main()

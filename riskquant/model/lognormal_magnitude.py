@@ -16,6 +16,7 @@
 #   limitations under the License.
 
 import math
+
 from scipy.stats import norm
 from scipy.stats import lognorm
 
@@ -50,5 +51,4 @@ class LognormalMagnitude(object):
 
     def mean(self):
         return self.distribution.mean()
-
 
