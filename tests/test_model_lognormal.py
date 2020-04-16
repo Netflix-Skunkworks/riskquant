@@ -5,13 +5,13 @@ from riskquant.model import lognormal_magnitude
 
 class MyTestCase(unittest.TestCase):
     def setUp(self):
-        self.l = lognormal_magnitude.LognormalMagnitude(1, 10)
+        self.logn = lognormal_magnitude.LognormalMagnitude(1, 10)
 
     def testDistribution(self):
         # We defined the cdf(low) ~ 0.05 and the cdf(hi) ~ 0.95 so that
         # it would be the 90% confidence interval. Check that it's true.
-        self.assertTrue(0.049 < self.l.distribution.cdf(1) < 0.051)
-        self.assertTrue(0.949 < self.l.distribution.cdf(10) < 0.951)
+        self.assertTrue(0.049 < self.logn.distribution.cdf(1) < 0.051)
+        self.assertTrue(0.949 < self.logn.distribution.cdf(10) < 0.951)
 
     def testHardParameters(self):
         # Test difficult-to-fit parameter values
