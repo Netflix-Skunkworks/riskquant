@@ -1,9 +1,11 @@
 from setuptools import setup
 
+version = '0.1.0'  # Must correspond to a git tag
+
 setup(
     name='riskquant',
     packages=['riskquant'],
-    version='0.1.0',  # Increment on any tagged release, and change download_url
+    version=version,
     license='apache-2.0',
     author='Netflix Detection team',
     author_email='detection@netflix.com',
@@ -24,7 +26,7 @@ setup(
                  'Topic :: Office/Business :: Financial'
     ],
     url='https://github.com/Netflix-Skunkworks/riskquant',
-    download_url='https://github.com/Netflix-Skunkworks/riskquant/archive/v0.1.0.tar.gz',  # Must be a tagged release
+    download_url=('https://github.com/Netflix-Skunkworks/riskquant/archive/' + version + '.tar.gz'),
     setup_requires=['setupmeta'],
     python_requires='>=3.5, <3.8',
     install_requires=[
