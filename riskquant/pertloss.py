@@ -27,7 +27,7 @@ These values are then used to create Modified PERT distribution.
 """
 
 from riskquant import loss
-from riskquant.model import pert_frequency, lognormal_magnitude
+from riskquant.model import lognormal_magnitude, pert_frequency
 
 
 class PERTLoss(loss.Loss):

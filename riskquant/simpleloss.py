@@ -27,7 +27,7 @@ distribution so that they fall at the 5% and 95% cumulative probability points.
 #   limitations under the License.
 
 from riskquant import loss
-from riskquant.model import poisson_frequency, lognormal_magnitude
+from riskquant.model import lognormal_magnitude, poisson_frequency
 
 
 class SimpleLoss(loss.Loss):
@@ -40,4 +40,3 @@ class SimpleLoss(loss.Loss):
         super(SimpleLoss, self).__init__(
             poisson_frequency.PoissonFrequency(frequency),
             lognormal_magnitude.LognormalMagnitude(low_loss, high_loss))
-

@@ -18,7 +18,7 @@ class TestPERTFrequency(unittest.TestCase):
     def test_draw(self):
         num_values = 10000
         total = sum(self.s.draw(num_values))
-        self.assertTrue(4.95 < float(total) / float(num_values) < 5.05)
+        self.assertTrue(4.7 < float(total) / float(num_values) < 5.3)
 
     def test_draw_small(self):
         num_values = 100000
