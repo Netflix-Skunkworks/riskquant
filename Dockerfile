@@ -6,6 +6,7 @@ WORKDIR /src
 COPY . /src/
 
 RUN pip install .
+RUN cp -R /src/riskquant/model /usr/local/lib/python3.7/site-packages/riskquant
 RUN python setup.py install
 
 ENTRYPOINT ["/src/build/scripts-3.7/riskquant"]
