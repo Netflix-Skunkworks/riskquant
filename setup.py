@@ -31,7 +31,7 @@ setup(
     python_requires='>=3.5, <3.8',
     install_requires=[
         'matplotlib',
-        'numpy',
+        'numpy <1.19.0, >= 1.16.0',
         'scipy',
         # Tensorflow probability is tested and stable against Tensorflow 2.1.0
         # https://github.com/tensorflow/probability/releases
