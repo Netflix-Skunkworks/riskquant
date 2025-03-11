@@ -33,11 +33,11 @@ class PERTFrequency(object):
         # Set up the PERT distribution
         # From FAIR: the most likely frequency will set the skew/peak, and
         # the "confidence" in the most likely frequency will set the kurtosis/temp of the distribution.
-        self.distribution = tfp.experimental.substrates.numpy.distributions.PERT(
+        self.distribution = tfp.distributions.PERT(
             low=min_freq, peak=most_likely_freq, high=max_freq, temperature=kurtosis)
 
     def draw(self, n=1):
         return [np.random.poisson(x) for x in self.distribution.sample(n)]
 
     def mean(self):
-        return self.distribution.mode().flat[0]
+        return self.distribution.mode()
