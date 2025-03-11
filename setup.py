@@ -28,15 +28,16 @@ setup(
     url='https://github.com/Netflix-Skunkworks/riskquant',
     download_url=('https://github.com/Netflix-Skunkworks/riskquant/archive/' + version + '.tar.gz'),
     setup_requires=['setupmeta'],
-    python_requires='>=3.5, <3.8',
+    python_requires='>=3.11',
     install_requires=[
         'matplotlib',
-        'numpy <1.19.0, >= 1.16.0',
+        'numpy',
         'scipy',
         # Tensorflow probability is tested and stable against Tensorflow 2.1.0
         # https://github.com/tensorflow/probability/releases
         'tensorflow >= 2.1.0',
-        'tensorflow_probability'
+        'tensorflow_probability',
+        'tensorflow-probability[tf]'
     ],
     extras_require={
         'test': ['tox'],
